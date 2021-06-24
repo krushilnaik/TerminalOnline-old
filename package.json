@@ -1,0 +1,12 @@
+{
+	"name": "TerminalOnline",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"start:client": "cd client && yarn start",
+		"start:server": "cd server && yarn start"
+	},
+	"repository": "git@github.com:krushilnaik/TerminalOnline.git",
+	"author": "Krushil Naik <krushilnaik96@gmail.com>",
+	"license": "MIT"
+}
