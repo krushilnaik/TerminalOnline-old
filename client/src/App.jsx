@@ -6,7 +6,11 @@ function App() {
 	return (
 		<section>
 			<div className='terminal-wrapper'>
-				<div className='terminal'>WORK IN PROGRESS</div>
+				<div className='button-bar'>
+					<button className='minimize'>-</button>
+					<button className='close'>x</button>
+				</div>
+				<div className='terminal'>TERMINAL HERE</div>
 			</div>
 		</section>
 	);
