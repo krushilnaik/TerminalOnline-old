@@ -2,19 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 
 // load local environment variables
 require('dotenv').config({ path: path.join(__dirname, '.env') });
-
-// set up https on local machine
-const key = fs.readFileSync(process.env.SSL_KEY_FILE);
-const cert = fs.readFileSync(process.env.SSL_CRT_FILE);
-
-/**
- * @type {https.ServerOptions}
- */
-const options = { key, cert };
 
 // set up server
 const app = express();
@@ -29,9 +19,28 @@ app.use('/', (_req, res) => {
 	);
 });
 
-// launch server
-const server = https.createServer(options, app);
+const { SSL_KEY_FILE, SSL_CRT_FILE } = process.env;
 
-server.listen(3000, () => {
-	console.log('Server listening on port 3000');
-});
+if (SSL_CRT_FILE && SSL_KEY_FILE) {
+	// set up https on local machine
+	const https = require('https');
+
+	const key = fs.readFileSync(SSL_KEY_FILE);
+	const cert = fs.readFileSync(SSL_CRT_FILE);
+
+	/**
+	 * @type {https.ServerOptions}
+	 */
+	const options = { key, cert };
+
+	// launch secure local server
+	const server = https.createServer(options, app);
+
+	server.listen(3000, () => {
+		console.log('Local server listening on port 3000');
+	});
+} else {
+	app.listen(3000, () => {
+		console.log('Server listening on port 3000');
+	});
+}
