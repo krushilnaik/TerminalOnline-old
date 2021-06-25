@@ -2,6 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
+const pty = require('node-pty');
+const os = require('os');
+const https = require('https');
+const http = require('http');
 
 // load local environment variables
 require('dotenv').config({ path: path.join(__dirname, '.env') });
@@ -27,8 +31,6 @@ if (SSL_CRT_FILE && SSL_KEY_FILE) {
 	console.log('Found SSL certificates.');
 
 	// set up https on local machine
-	const https = require('https');
-
 	const key = fs.readFileSync(SSL_KEY_FILE);
 	const cert = fs.readFileSync(SSL_CRT_FILE);
 
@@ -40,8 +42,6 @@ if (SSL_CRT_FILE && SSL_KEY_FILE) {
 	// initialize with https
 	server = https.createServer(options, app);
 } else {
-	const http = require('http');
-
 	// initialize with http
 	server = http.createServer(app);
 }
@@ -60,9 +60,6 @@ const io = new Server(server, {
 io.on('connection', socket => {
 	console.log('Successfully set up server-side SocketIO');
 	io.on('disconnection', () => console.log('Disconnected from server-side SocketIO'));
-
-	const pty = require('node-pty');
-	const os = require('os');
 
 	const ptyProcess = pty.spawn(os.platform() === 'win32' ? 'powershell.exe' : 'bash', [], {});
 
