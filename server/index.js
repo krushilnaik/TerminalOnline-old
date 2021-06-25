@@ -6,7 +6,7 @@ const path = require('path');
 // load local environment variables
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
-// set up server
+// set up express
 const app = express();
 
 // set up middleware
@@ -19,9 +19,13 @@ app.use('/', (_req, res) => {
 	);
 });
 
+let server;
+
 const { SSL_KEY_FILE, SSL_CRT_FILE } = process.env;
 
 if (SSL_CRT_FILE && SSL_KEY_FILE) {
+	console.log('Found SSL certificates.');
+
 	// set up https on local machine
 	const https = require('https');
 
@@ -33,14 +37,45 @@ if (SSL_CRT_FILE && SSL_KEY_FILE) {
 	 */
 	const options = { key, cert };
 
-	// launch secure local server
-	const server = https.createServer(options, app);
-
-	server.listen(3000, () => {
-		console.log('Local server listening on port 3000');
-	});
+	// initialize with https
+	server = https.createServer(options, app);
 } else {
-	app.listen(3000, () => {
-		console.log('Server listening on port 3000');
-	});
+	const http = require('http');
+
+	// initialize with http
+	server = http.createServer(app);
 }
+
+// set up SocketIO
+const { Server } = require('socket.io');
+
+const io = new Server(server, {
+	cors: {
+		origin: 'https://localhost:8080',
+		credentials: true,
+		methods: ['GET', 'POST']
+	}
+});
+
+io.on('connection', socket => {
+	console.log('Successfully set up server-side SocketIO');
+	io.on('disconnection', () => console.log('Disconnected from server-side SocketIO'));
+
+	const pty = require('node-pty');
+	const os = require('os');
+
+	const ptyProcess = pty.spawn(os.platform() === 'win32' ? 'powershell.exe' : 'bash', [], {});
+
+	ptyProcess.onData(data => {
+		socket.emit('output', data);
+	});
+
+	socket.on('input', data => {
+		ptyProcess.write(data);
+	});
+});
+
+// launch the server
+server.listen(3000, () => {
+	console.log('Server listening on port 3000');
+});
