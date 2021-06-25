@@ -33,7 +33,14 @@
 					outline: none;
 					border: none;
 					font-size: 15px;
-					color: white;
+					color: transparent;
+					cursor: pointer;
+					transition: all 250ms;
+
+					&:hover {
+						color: white;
+						filter: brightness(150%);
+					}
 
 					&.close {
 						background-color: crimson;
@@ -45,14 +52,14 @@
 				}
 			}
 
-			.terminal {
+			#terminal {
 				display: grid;
 				place-content: center;
 				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 				font-weight: bold;
 				font-size: 72px;
 				color: rgba(240, 255, 240, 0.795);
-				background-color: rgba($color: white, $alpha: 0.1);
+				background-color: rgba($color: darkslateblue, $alpha: 0.1);
 				width: 97%;
 				height: 97%;
 				place-self: center;
