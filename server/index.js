@@ -51,7 +51,7 @@ const { Server } = require('socket.io');
 
 const io = new Server(server, {
 	cors: {
-		origin: 'https://localhost:8080',
+		origin: 'https://terminalonline.netlify.app',
 		credentials: true,
 		methods: ['GET', 'POST']
 	}
