@@ -19,7 +19,10 @@
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"predeploy": "yarn build",
+		"deploy": "gh-pages -d build",
+		"postdeploy": "rimraf ./build"
 	},
 	"eslintConfig": {
 		"extends": [
@@ -40,6 +43,8 @@
 		]
 	},
 	"devDependencies": {
+		"gh-pages": "^3.2.3",
+		"rimraf": "^3.0.2",
 		"sass": "^1.35.1"
 	},
 	"main": "index.js",
