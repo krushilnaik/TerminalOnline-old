@@ -1,14 +1,14 @@
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs');
-const path = require('path');
+// const fs = require('fs');
+// const path = require('path');
 const pty = require('node-pty');
 const os = require('os');
-const https = require('https');
-const http = require('http');
+// const https = require('https');
+// const http = require('http');
 
 // load local environment variables
-require('dotenv').config({ path: path.join(__dirname, '.env') });
+// require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 // set up express
 const app = express();
@@ -25,26 +25,26 @@ app.use('/', (_req, res) => {
 
 let server;
 
-const { SSL_KEY_FILE, SSL_CRT_FILE } = process.env;
+// const { SSL_KEY_FILE, SSL_CRT_FILE } = process.env;
 
-if (SSL_CRT_FILE && SSL_KEY_FILE) {
-	console.log('Found SSL certificates.');
+// if (SSL_CRT_FILE && SSL_KEY_FILE) {
+// 	console.log('Found SSL certificates.');
 
-	// set up https on local machine
-	const key = fs.readFileSync(SSL_KEY_FILE);
-	const cert = fs.readFileSync(SSL_CRT_FILE);
+// 	// set up https on local machine
+// 	const key = fs.readFileSync(SSL_KEY_FILE);
+// 	const cert = fs.readFileSync(SSL_CRT_FILE);
 
-	/**
-	 * @type {https.ServerOptions}
-	 */
-	const options = { key, cert };
+// 	/**
+// 	 * @type {https.ServerOptions}
+// 	 */
+// 	const options = { key, cert };
 
-	// initialize with https
-	server = https.createServer(options, app);
-} else {
-	// initialize with http
-	server = http.createServer(app);
-}
+// 	// initialize with https
+// 	server = https.createServer(options, app);
+// } else {
+// 	// initialize with http
+// 	server = http.createServer(app);
+// }
 
 // set up SocketIO
 const { Server } = require('socket.io');
@@ -72,7 +72,9 @@ io.on('connection', socket => {
 	});
 });
 
+const PORT = process.env.PORT || 3000;
+
 // launch the server
-server.listen(3000, () => {
-	console.log('Server listening on port 3000');
+app.listen(PORT, () => {
+	console.log(`Server listening on port ${PORT}`);
 });
