@@ -11,6 +11,9 @@
 	"repository": "git@github.com:krushilnaik/TerminalOnline.git",
 	"author": "Krushil Naik <krushilnaik96@gmail.com>",
 	"license": "MIT",
+	"engines": {
+		"node": ">=14.16.1"
+	},
 	"devDependencies": {
 		"concurrently": "^6.2.0"
 	}

@@ -7,6 +7,9 @@
 		"start": "node index",
 		"start:dev": "nodemon index"
 	},
+	"engines": {
+		"node": ">=14.16.1"
+	},
 	"dependencies": {
 		"cors": "^2.8.5",
 		"dotenv": "^10.0.0",
