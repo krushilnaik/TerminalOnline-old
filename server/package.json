@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"scripts": {
 		"start": "babel-node src/server",
-		"start:dev": "nodemon src/server"
+		"start:dev": "nodemon --exec babel-node src/server"
 	},
 	"engines": {
 		"node": ">=14.16.1"
