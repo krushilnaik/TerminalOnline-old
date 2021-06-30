@@ -18,12 +18,17 @@ const app = express();
 
 // set up middleware
 app.use(cors());
+app.use(express.static(join(__dirname, 'build')));
 
 // set up dummy route
-app.get('/', (_req, res) => {
+app.get('/pty', (_req, res) => {
 	res.send(
 		"Server is up and running 👍 (if you weren't expecting this message, you're doing something wrong)"
 	);
+});
+
+app.get('*', (_req, res) => {
+	res.status(200).sendFile(join(__dirname, 'build'));
 });
 
 let server;
